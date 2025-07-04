@@ -1,30 +1,95 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hola Mimi</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-image: url('https://mancomunidaddelaserena.com/wp-content/uploads/2021/03/Monterrubio-ft1.jpg');
-            background-size: cover;
-            background-position: center;
-            text-align: center;
-        }
-        h1 {
-            font-size: 5rem;
-            color: white;
-            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portafolio de Informática</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    p.subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 40px;
+    }
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card h2 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      color: #222;
+    }
+    .card p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+    .card a {
+      display: inline-block;
+      margin-top: 15px;
+      text-decoration: none;
+      background-color: #2563eb;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+    .card a:hover {
+      background-color: #1e40af;
+    }
+  </style>
 </head>
 <body>
-    <h1>Hola Mimi</h1>
+  <div class="container">
+    <h1>Portafolio de Informática</h1>
+    <p class="subtitle">Algunos de los proyectos que he desarrollado</p>
+
+    <div class="projects">
+      <div class="card">
+        <h2>Sistema de Gestión Escolar</h2>
+        <p>Aplicación web para gestionar alumnos, profesores y calificaciones. Implementada con React y Firebase.</p>
+        <a href="https://github.com/usuario/sistema-escolar" target="_blank">Ver en GitHub</a>
+      </div>
+
+      <div class="card">
+        <h2>Sitio de Noticias Tech</h2>
+        <p>Un sitio moderno que consume una API de noticias tecnológicas. Desarrollado con Next.js y Tailwind CSS.</p>
+        <a href="https://github.com/usuario/noticias-tech" target="_blank">Ver en GitHub</a>
+      </div>
+
+      <div class="card">
+        <h2>Automatizador de Tareas</h2>
+        <p>Script en Python que automatiza tareas como organizar archivos y enviar correos automáticos.</p>
+        <a href="https://github.com/usuario/automatizador-tareas" target="_blank">Ver en GitHub</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
