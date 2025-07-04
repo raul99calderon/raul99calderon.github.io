@@ -3,93 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portafolio de Informática</title>
+  <title>Ajedrez contra la Máquina</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f9fafb;
-      margin: 0;
-      padding: 0;
-      color: #333;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f0f0f0;
     }
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-    h1 {
-      font-size: 2.5rem;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    p.subtitle {
-      text-align: center;
-      color: #555;
-      margin-bottom: 40px;
-    }
-    .projects {
+    #board {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(8, 60px);
+      grid-template-rows: repeat(8, 60px);
+      border: 2px solid #333;
+      margin-top: 20px;
     }
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      transition: transform 0.2s;
+    .cell {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      cursor: pointer;
     }
-    .card:hover {
-      transform: translateY(-5px);
-    }
-    .card h2 {
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-      color: #222;
-    }
-    .card p {
-      font-size: 0.95rem;
-      color: #555;
-    }
-    .card a {
-      display: inline-block;
-      margin-top: 15px;
-      text-decoration: none;
-      background-color: #2563eb;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-    }
-    .card a:hover {
-      background-color: #1e40af;
-    }
+    .light { background: #eee; }
+    .dark { background: #999; }
+    .selected { outline: 3px solid red; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Portafolio de Informática</h1>
-    <p class="subtitle">Algunos de los proyectos que he desarrollado</p>
+  <h1>Ajedrez vs Máquina (simple)</h1>
+  <div id="board"></div>
 
-    <div class="projects">
-      <div class="card">
-        <h2>Sistema de Gestión Escolar</h2>
-        <p>Aplicación web para gestionar alumnos, profesores y calificaciones. Implementada con React y Firebase.</p>
-        <a href="https://github.com/usuario/sistema-escolar" target="_blank">Ver en GitHub</a>
-      </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
+  <script>
+    const boardEl = document.getElementById('board');
+    const game = new Chess();
+    let selected = null;
 
-      <div class="card">
-        <h2>Sitio de Noticias Tech</h2>
-        <p>Un sitio moderno que consume una API de noticias tecnológicas. Desarrollado con Next.js y Tailwind CSS.</p>
-        <a href="https://github.com/usuario/noticias-tech" target="_blank">Ver en GitHub</a>
-      </div>
+    const piecesUnicode = {
+      'p': '♟', 'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚',
+      'P': '♙', 'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔'
+    };
 
-      <div class="card">
-        <h2>Automatizador de Tareas</h2>
-        <p>Script en Python que automatiza tareas como organizar archivos y enviar correos automáticos.</p>
-        <a href="https://github.com/usuario/automatizador-tareas" target="_blank">Ver en GitHub</a>
-      </div>
-    </div>
-  </div>
+    function renderBoard() {
+      boardEl.innerHTML = '';
+      const board = game.board();
+      for (let r = 7; r >= 0; r--) {
+        for (let c = 0; c < 8; c++) {
+          const cell = document.createElement('div');
+          const piece = board[r][c];
+          const isLight = (r + c) % 2 === 0;
+          cell.className = 'cell ' + (isLight ? 'light' : 'dark');
+          cell.dataset.square = 'abcdefgh'[c] + (r + 1);
+          if (piece) {
+            cell.textContent = piecesUnicode[piece.color === 'w' ? piece.type.toUpperCase() : piece.type];
+          }
+          if (selected === cell.dataset.square) {
+            cell.classList.add('selected');
+          }
+          cell.onclick = onCellClick;
+          boardEl.appendChild(cell);
+        }
+      }
+    }
+
+    function onCellClick(e) {
+      const square = e.currentTarget.dataset.square;
+      if (selected) {
+        const move = game.move({ from: selected, to: square, promotion: 'q' });
+        selected = null;
+        if (move) {
+          renderBoard();
+          setTimeout(makeAIMove, 500);
+        } else {
+          renderBoard();
+        }
+      } else {
+        selected = square;
+        renderBoard();
+      }
+    }
+
+    function makeAIMove() {
+      const moves = game.moves();
+      if (game.game_over() || moves.length === 0) return;
+      const move = moves[Math.floor(Math.random() * moves.length)];
+      game.move(move);
+      renderBoard();
+    }
+
+    renderBoard();
+  </script>
 </body>
 </html>
